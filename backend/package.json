@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=local nodemon src/app.js",
-    "prod": "cross-env NODE_ENV=production node src/app.js"
+    "prod": "cross-env NODE_ENV=local node src/app.js"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
     "express-rate-limit": "^8.5.2",
     "helmet": "^8.2.0",
     "mongoose": "^9.7.0",
+    "serverless-http": "^4.0.0",
     "validator": "^13.15.35"
   },
   "devDependencies": {
