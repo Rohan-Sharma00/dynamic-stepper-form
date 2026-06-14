@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import {
   Dialog,
   DialogTitle,
@@ -6,56 +7,38 @@ import {
   DialogActions,
   Button,
   TextField,
-  Paper,
 } from "@mui/material";
 
-function CreateFormDialog({ open, onClose }) {
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    steps: [],
-  });
+import { createForm } from "../services/form.service";
 
-  const addStep = () => {
-    setFormData((prev) => ({
-      ...prev,
-      steps: [
-        ...prev.steps,
-        {
-          id: crypto.randomUUID(),
-          title: "",
-          fields: [],
-        },
-      ],
-    }));
-  };
+function CreateFormDialog({
+  open,
+  onClose,
+  refreshForms,
+}) {
+  const [title, setTitle] =
+    useState("");
 
-  const updateStepTitle = (index, value) => {
-    const steps = [...formData.steps];
+  const [description, setDescription] =
+    useState("");
 
-    steps[index].title = value;
+  const handleSave = async () => {
+    try {
+      await createForm({
+        title,
+        description,
+        steps: [],
+      });
 
-    setFormData({
-      ...formData,
-      steps,
-    });
-  };
+      refreshForms();
 
-  const addField = (stepIndex, type) => {
-    const steps = [...formData.steps];
+      setTitle("");
+      setDescription("");
 
-    steps[stepIndex].fields.push({
-      id: crypto.randomUUID(),
-      label: "",
-      name: "",
-      type,
-      required: false,
-    });
-
-    setFormData({
-      ...formData,
-      steps,
-    });
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -63,106 +46,32 @@ function CreateFormDialog({ open, onClose }) {
       open={open}
       onClose={onClose}
       fullWidth
-      maxWidth="md"
     >
       <DialogTitle>
         Create Form
       </DialogTitle>
 
       <DialogContent>
-        <div className="space-y-4 mt-2">
+        <div className="flex flex-col gap-4 mt-2">
           <TextField
-            fullWidth
             label="Form Name"
-            value={formData.title}
+            value={title}
             onChange={(e) =>
-              setFormData({
-                ...formData,
-                title: e.target.value,
-              })
+              setTitle(e.target.value)
             }
+            fullWidth
           />
 
           <TextField
-            fullWidth
             label="Description"
-            value={formData.description}
+            value={description}
             onChange={(e) =>
-              setFormData({
-                ...formData,
-                description: e.target.value,
-              })
+              setDescription(
+                e.target.value
+              )
             }
+            fullWidth
           />
-
-          <Button
-            variant="outlined"
-            onClick={addStep}
-          >
-            Add Step
-          </Button>
-
-          {formData.steps.map((step, index) => (
-            <Paper
-              key={step.id}
-              className="p-4 mt-4"
-            >
-              <TextField
-                fullWidth
-                label={`Step ${index + 1} Name`}
-                value={step.title}
-                onChange={(e) =>
-                  updateStepTitle(
-                    index,
-                    e.target.value
-                  )
-                }
-              />
-
-              <div className="flex gap-2 mt-4">
-                <Button
-                  size="small"
-                  variant="outlined"
-                  onClick={() =>
-                    addField(index, "text")
-                  }
-                >
-                  Text
-                </Button>
-
-                <Button
-                  size="small"
-                  variant="outlined"
-                  onClick={() =>
-                    addField(index, "select")
-                  }
-                >
-                  Select
-                </Button>
-
-                <Button
-                  size="small"
-                  variant="outlined"
-                  onClick={() =>
-                    addField(index, "radio")
-                  }
-                >
-                  Radio
-                </Button>
-              </div>
-
-              <div className="mt-4">
-                {step.fields.map((field) => (
-                  <div
-                    key={field.id}
-                    className="border rounded p-3 mt-2"
-                  >
-                    {field.type}
-                  </div>
-                ))}
-              </div>
-            </Paper>
-          ))}
         </div>
       </DialogContent>
 
@@ -171,8 +80,11 @@ function CreateFormDialog({ open, onClose }) {
           Cancel
         </Button>
 
-        <Button variant="contained">
-          Save Form
+        <Button
+          variant="contained"
+          onClick={handleSave}
+        >
+          Save
         </Button>
       </DialogActions>
     </Dialog>

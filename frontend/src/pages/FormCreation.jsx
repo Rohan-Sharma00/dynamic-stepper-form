@@ -1,10 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
+
 import MainLayout from "../layouts/MainLayout";
-import CreateFormDialog from "../components/CreateFormDialog";
+import FormTable from "../components/FormTable";
+
+import {
+  getForms,
+  deleteForm,
+} from "../services/form.service";
 
 function FormCreation() {
-  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const [forms, setForms] = useState([]);
+
+  useEffect(() => {
+    loadForms();
+  }, []);
+
+  const loadForms = async () => {
+    try {
+      const data = await getForms();
+      setForms(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteForm(id);
+      loadForms();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <MainLayout>
@@ -14,22 +45,24 @@ function FormCreation() {
             Form Creation
           </h1>
 
-          <p className="text-slate-500">
-            Create and manage forms
+          <p className="text-gray-500 mt-2">
+            Create and manage dynamic forms
           </p>
         </div>
 
         <Button
           variant="contained"
-          onClick={() => setOpen(true)}
+          onClick={() =>
+            navigate("/forms/create")
+          }
         >
           Create New Form
         </Button>
       </div>
 
-      <CreateFormDialog
-        open={open}
-        onClose={() => setOpen(false)}
+      <FormTable
+        forms={forms}
+        onDelete={handleDelete}
       />
     </MainLayout>
   );

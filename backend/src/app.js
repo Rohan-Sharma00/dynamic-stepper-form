@@ -1,10 +1,6 @@
 const dotenv = require("dotenv");
-
-const env = process.env.NODE_ENV || "local";
-
-dotenv.config({
-  path: `.env.${env}`,
-});
+dotenv.config();
+const cors = require("cors");
 
 const express = require("express");
 const helmet = require("helmet");
@@ -16,6 +12,15 @@ const formRoutes = require("./routes/form.routes");
 const submissionRoutes = require("./routes/submission.routes");
 
 const app = express();
+app.use(express.json());
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+
 
 app.use(express.json());
 
@@ -30,10 +35,10 @@ app.use(
 
 app.use("/api/forms", formRoutes);
 
-app.use(
-  "/api/submissions",
-  submissionRoutes
-);
+// app.use(
+//   "/api/submissions",
+//   submissionRoutes
+// );
 
 app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).json({
