@@ -12,7 +12,6 @@ const submissionRoutes = require("./routes/submission.routes");
 
 const app = express();
 
-// Update this with your exact new live Netlify URL
 const allowedOrigins = [
   "http://localhost:5173", 
   "https://multi-step-draft-form.netlify.app"
@@ -41,7 +40,6 @@ app.use(
   })
 );
 
-// Database Connection Middleware for Serverless
 let isConnected = false;
 app.use(async (req, res, next) => {
   if (!isConnected) {
@@ -55,11 +53,9 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// FIX: Keep routes standard. netlify.toml handles the internal routing map.
 app.use("/api/forms", formRoutes);
 app.use("/api/submissions", submissionRoutes);
 
-// Error handling middleware
 app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).json({
     success: false,
@@ -67,8 +63,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Run traditional listener ONLY locally
-if (process.env.NODE_ENV === "local") {
+if (process.env.NODE_ENV !== "production") {
   connectDB().then(() => {
     app.listen(process.env.PORT || 5000, () => {
       console.log(`Server running locally on port ${process.env.PORT || 5000}`);
