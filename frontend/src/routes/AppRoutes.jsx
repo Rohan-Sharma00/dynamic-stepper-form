@@ -1,12 +1,10 @@
 import { Routes, Route } from "react-router-dom";
-import FormBuilder from "../pages/FormBuilder";
-import StepperForm from "../pages/StepperForm";
+import FormCreation from "../pages/FormCreation";
 
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<FormBuilder />} />
-      <Route path="/stepper" element={<StepperForm />} />
+      <Route path="/" element={<FormCreation />} />
     </Routes>
   );
 }
