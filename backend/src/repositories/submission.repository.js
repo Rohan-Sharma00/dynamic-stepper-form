@@ -6,9 +6,10 @@ class SubmissionRepository {
   }
 
   findAll() {
-    return Submission.find()
-      .populate("formId", "title")
-      .sort({ createdAt: -1 });
+   return Submission.find()
+    .populate("formId", "title")
+    .sort({ createdAt: -1 })
+    .lean();
   }
 
   findById(id) {
