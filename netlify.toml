@@ -1,0 +1,13 @@
+[build]
+  command = "cd frontend && npm install && npm run build"
+  publish = "frontend/dist"
+
+[functions]
+  directory = "backend"
+  external_node_modules = ["express", "mongoose", "cors", "serverless-http", "helmet", "express-rate-limit"]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/server/api/:splat"
+  status = 200
