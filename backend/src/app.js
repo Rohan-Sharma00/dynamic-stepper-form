@@ -5,7 +5,6 @@ const cors = require("cors");
 const express = require("express");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-// const serverless = require("serverless-http"); 
 
 const { connectDB } = require("./config/database");
 const formRoutes = require("./routes/form.routes");
@@ -89,8 +88,3 @@ connectDB()
     console.error("Startup failed:", err);
   });
 
-const handler = serverless(app);
-
-module.exports = {
-  handler,
-};
