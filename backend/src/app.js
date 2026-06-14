@@ -15,7 +15,8 @@ app.set('trust proxy', 1);
 
 const allowedOrigins = [
   "http://localhost:5173", 
-  "https://multi-step-draft-form.netlify.app"
+  "https://multi-step-draft-form.netlify.app",
+  "https://dynamic-stepper-form.vercel.app"
 ];
 
 app.use(
