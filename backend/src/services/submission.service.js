@@ -33,6 +33,12 @@ class SubmissionService {
     );
   }
 
+  delete(id) {
+  return submissionRepository.delete(
+    id
+  );
+}
+
   submit(id, data) {
     return submissionRepository.update(
       id,

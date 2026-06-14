@@ -17,6 +17,12 @@ class SubmissionRepository {
     );
   }
 
+  delete(id) {
+  return Submission.findByIdAndDelete(
+    id
+  );
+}
+
   update(id, data) {
     return Submission.findByIdAndUpdate(
       id,

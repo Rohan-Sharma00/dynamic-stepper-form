@@ -86,10 +86,33 @@ const submitForm = async (
   }
 };
 
+
+const deleteSubmission =
+  async (
+    req,
+    res,
+    next
+  ) => {
+    try {
+      await submissionService.delete(
+        req.params.id
+      );
+
+      res.json({
+        success: true,
+        message:
+          "Submission deleted",
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
 module.exports = {
   createSubmission,
   getSubmissions,
   getSubmissionById,
   saveDraft,
   submitForm,
+  deleteSubmission
 };

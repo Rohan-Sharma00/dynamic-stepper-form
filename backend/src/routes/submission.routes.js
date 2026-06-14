@@ -6,6 +6,7 @@ const {
   getSubmissionById,
   saveDraft,
   submitForm,
+  deleteSubmission
 } = require(
   "../controllers/submission.controller"
 );
@@ -35,6 +36,11 @@ router.patch(
 router.post(
   "/:id/submit",
   submitForm
+);
+
+router.delete(
+  "/:id",
+  deleteSubmission
 );
 
 module.exports = router;
