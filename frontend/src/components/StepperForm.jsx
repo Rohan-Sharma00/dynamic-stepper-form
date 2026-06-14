@@ -6,7 +6,17 @@ import {
   Radio,
   FormControlLabel,
   MenuItem,
+  Typography,
+  Divider,
+  Chip,
+  Box,
+  Stack,
 } from "@mui/material";
+
+import SaveIcon from "@mui/icons-material/Save";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import SendIcon from "@mui/icons-material/Send";
 
 function StepperForm({
   step,
@@ -18,10 +28,7 @@ function StepperForm({
   isLastStep,
   onSubmit,
 }) {
-  const updateAnswer = (
-    key,
-    value
-  ) => {
+  const updateAnswer = (key, value) => {
     setAnswers({
       ...answers,
       [key]: value,
@@ -29,165 +36,165 @@ function StepperForm({
   };
 
   return (
-    <Paper className="p-6 rounded-xl shadow-sm">
-      <h2 className="text-2xl font-bold mb-6">
-        {step.title}
-      </h2>
+    <Paper
+      elevation={3}
+      sx={{
+        borderRadius: 4,
+        overflow: "hidden",
+      }}
+    >
+      {/* Top Header Banner Block */}
+      <Box
+        sx={{
+          background: "linear-gradient(to right, #2563eb, #4f46e5)",
+          color: "white",
+          p: 3,
+        }}
+      >
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={2}
+        >
+          <Box>
+            <Typography variant="h5" fontWeight="bold">
+              {step.title}
+            </Typography>
+            <Typography variant="body2">
+              Complete all required fields in this step
+            </Typography>
+          </Box>
 
-      <div className="flex flex-col gap-6">
-        {step.questions.map(
-          (question) => (
-            <div
+          <Chip
+            label={`${step.questions.length} Questions`}
+            sx={{
+              bgcolor: "white",
+              color: "#2563eb",
+              fontWeight: "bold",
+            }}
+          />
+        </Stack>
+      </Box>
+
+      {/* Main Questionnaire Viewport Layer */}
+      <Box sx={{ p: 4 }}>
+        <Stack spacing={3}>
+          {step.questions.map((question) => (
+            <Paper
               key={question.label}
+              variant="outlined"
+              sx={{
+                p: 3,
+                borderRadius: 3,
+              }}
             >
-              {question.fieldType ===
-                "text" && (
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle1" fontWeight="600">
+                  {question.label}
+                </Typography>
+
+                {question.required && (
+                  <Typography variant="caption" color="error">
+                    Required
+                  </Typography>
+                )}
+              </Box>
+
+              {/* Text Field Conditonal Mapping */}
+              {question.fieldType === "text" && (
                 <TextField
                   fullWidth
-                  label={
-                    question.label
-                  }
-                  required={
-                    question.required
-                  }
-                  value={
-                    answers[
-                      question.label
-                    ] || ""
-                  }
-                  onChange={(e) =>
-                    updateAnswer(
-                      question.label,
-                      e.target.value
-                    )
-                  }
+                  placeholder={`Enter ${question.label}`}
+                  value={answers[question.label] || ""}
+                  onChange={(e) => updateAnswer(question.label, e.target.value)}
                 />
               )}
 
-              {question.fieldType ===
-                "radio" && (
-                <>
-                  <label className="block mb-2 font-medium">
-                    {
-                      question.label
-                    }
-                  </label>
-
-                  <RadioGroup
-                    value={
-                      answers[
-                        question.label
-                      ] || ""
-                    }
-                    onChange={(e) =>
-                      updateAnswer(
-                        question.label,
-                        e.target.value
-                      )
-                    }
-                  >
-                    {question.options.map(
-                      (
-                        option
-                      ) => (
-                        <FormControlLabel
-                          key={
-                            option
-                          }
-                          value={
-                            option
-                          }
-                          control={
-                            <Radio />
-                          }
-                          label={
-                            option
-                          }
-                        />
-                      )
-                    )}
-                  </RadioGroup>
-                </>
+              {question.fieldType === "radio" && (
+                <RadioGroup
+                  value={answers[question.label] || ""}
+                  onChange={(e) => updateAnswer(question.label, e.target.value)}
+                >
+                  {question.options.map((option) => (
+                    <FormControlLabel
+                      key={option}
+                      value={option}
+                      control={<Radio />}
+                      label={option}
+                    />
+                  ))}
+                </RadioGroup>
               )}
 
-              {question.fieldType ===
-                "select" && (
+              {question.fieldType === "select" && (
                 <TextField
                   select
                   fullWidth
-                  label={
-                    question.label
-                  }
-                  required={
-                    question.required
-                  }
-                  value={
-                    answers[
-                      question.label
-                    ] || ""
-                  }
-                  onChange={(e) =>
-                    updateAnswer(
-                      question.label,
-                      e.target.value
-                    )
-                  }
+                  value={answers[question.label] || ""}
+                  onChange={(e) => updateAnswer(question.label, e.target.value)}
                 >
-                  {question.options.map(
-                    (
-                      option
-                    ) => (
-                      <MenuItem
-                        key={
-                          option
-                        }
-                        value={
-                          option
-                        }
-                      >
-                        {option}
-                      </MenuItem>
-                    )
-                  )}
+                  {question.options.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
                 </TextField>
               )}
-            </div>
-          )
-        )}
-      </div>
+            </Paper>
+          ))}
+        </Stack>
 
-      <div className="flex gap-3 mt-8">
-        <Button
-          variant="outlined"
-          onClick={onSave}
+        <Divider sx={{ my: 4 }} />
+
+        {/* Action Button Row Navigation Footer */}
+        <Stack
+          direction="row"
+          useFlexGap
+          flexWrap="wrap"
+          spacing={1.5}
+          justifyContent="space-between"
+          alignItems="center"
         >
-          Save Draft
-        </Button>
-
-        <Button
-          variant="outlined"
-          disabled={!onBack}
-          onClick={onBack}
-        >
-          Back
-        </Button>
-
-        {!isLastStep ? (
           <Button
-            variant="contained"
-            onClick={onNext}
+            variant="outlined"
+            startIcon={<SaveIcon />}
+            onClick={onSave}
           >
-            Save & Next
+            Save Draft
           </Button>
-        ) : (
-          <Button
-            variant="contained"
-            onClick={onSubmit}
-          >
-            Submit Form
-          </Button>
-        )}
-      </div>
+
+          <Stack direction="row" spacing={1.5}>
+            <Button
+              variant="outlined"
+              disabled={!onBack}
+              startIcon={<ArrowBackIcon />}
+              onClick={onBack}
+            >
+              Back
+            </Button>
+
+            {!isLastStep ? (
+              <Button
+                variant="contained"
+                endIcon={<ArrowForwardIcon />}
+                onClick={onNext}
+              >
+                Next Step
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="success"
+                endIcon={<SendIcon />}
+                onClick={onSubmit}
+              >
+                Submit Form
+              </Button>
+            )}
+          </Stack>
+        </Stack>
+      </Box>
     </Paper>
   );
 }

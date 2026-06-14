@@ -1,4 +1,8 @@
-import { Routes, Route } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
 import FormCreation from "../pages/FormCreation";
 import CreateForm from "../pages/CreateForm";
@@ -10,6 +14,16 @@ function AppRoutes() {
     <Routes>
       <Route
         path="/"
+        element={
+          <Navigate
+            to="/submissions"
+            replace
+          />
+        }
+      />
+
+      <Route
+        path="/forms"
         element={<FormCreation />}
       />
 
