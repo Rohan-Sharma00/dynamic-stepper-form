@@ -71,5 +71,8 @@ if (process.env.NODE_ENV !== "production") {
   });
 }
 
-module.exports = app;
-module.exports.handler = serverless(app);
+const handler = serverless(app);
+
+module.exports = {
+  handler,
+};

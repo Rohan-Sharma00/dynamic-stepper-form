@@ -6,13 +6,11 @@
   directory = "backend"
   node_bundler = "esbuild"
 
-# THIS MUST BE FIRST
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/app/api/:splat"
+  to = "/.netlify/functions/app/:splat"
   status = 200
 
-# THIS MUST BE SECOND
 [[redirects]]
   from = "/*"
   to = "/index.html"
