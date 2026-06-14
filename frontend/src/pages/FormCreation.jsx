@@ -1,32 +1,36 @@
-import { Button, Paper } from "@mui/material";
+import { useState } from "react";
+import { Button } from "@mui/material";
 import MainLayout from "../layouts/MainLayout";
-import FormTable from "../components/FormTable";
+import CreateFormDialog from "../components/CreateFormDialog";
 
 function FormCreation() {
-  const forms = [
-    {
-      _id: 1,
-      title: "Wellness Form",
-      steps: [{}, {}, {}],
-      createdAt: "Today",
-    },
-  ];
+  const [open, setOpen] = useState(false);
 
   return (
     <MainLayout>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-semibold">
-          Form Creation
-        </h1>
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-4xl font-bold">
+            Form Creation
+          </h1>
 
-        <Button variant="contained">
+          <p className="text-slate-500">
+            Create and manage forms
+          </p>
+        </div>
+
+        <Button
+          variant="contained"
+          onClick={() => setOpen(true)}
+        >
           Create New Form
         </Button>
       </div>
 
-      <Paper>
-        <FormTable forms={forms} />
-      </Paper>
+      <CreateFormDialog
+        open={open}
+        onClose={() => setOpen(false)}
+      />
     </MainLayout>
   );
 }
