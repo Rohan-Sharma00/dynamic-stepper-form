@@ -4,7 +4,7 @@ const cors = require("cors");
 const express = require("express");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-const serverless = require("serverless-http"); // 1. Import serverless-http
+const serverless = require("serverless-http"); 
 
 const { connectDB } = require("./config/database");
 const formRoutes = require("./routes/form.routes");
@@ -12,8 +12,12 @@ const submissionRoutes = require("./routes/submission.routes");
 
 const app = express();
 
-// 2. Dynamically allow both local development and your production Netlify URL
-const allowedOrigins = ["http://localhost:5173", "https://your-netlify-app-name.netlify.app"];
+// Update this with your exact new live Netlify URL
+const allowedOrigins = [
+  "http://localhost:5173", 
+  "https://multi-step-draft-form.netlify.app"
+];
+
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -37,7 +41,7 @@ app.use(
   })
 );
 
-// 3. Establish Database Connection for Serverless environments
+// Database Connection Middleware for Serverless
 let isConnected = false;
 app.use(async (req, res, next) => {
   if (!isConnected) {
@@ -51,9 +55,9 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// 4. Netlify serverless functions expect the entry point to match the function name mapping
-app.use("/.netlify/functions/server/api/forms", formRoutes);
-app.use("/.netlify/functions/server/api/submissions", submissionRoutes);
+// FIX: Keep routes standard. netlify.toml handles the internal routing map.
+app.use("/api/forms", formRoutes);
+app.use("/api/submissions", submissionRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -63,7 +67,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// 5. Keep app.listen only for your local development environment
+// Run traditional listener ONLY locally
 if (process.env.NODE_ENV === "local") {
   connectDB().then(() => {
     app.listen(process.env.PORT || 5000, () => {
@@ -72,6 +76,5 @@ if (process.env.NODE_ENV === "local") {
   });
 }
 
-// 6. Export for Netlify Engine
 module.exports = app;
 module.exports.handler = serverless(app);
