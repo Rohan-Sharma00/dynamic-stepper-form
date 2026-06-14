@@ -12,6 +12,7 @@ const formRoutes = require("./routes/form.routes");
 const submissionRoutes = require("./routes/submission.routes");
 
 const app = express();
+app.set('trust proxy', 1);
 
 const allowedOrigins = [
   "http://localhost:5173", 
@@ -38,6 +39,9 @@ app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100,
+    standardHeaders: true, 
+    legacyHeaders: false,
+    validate: false,
   })
 );
 
