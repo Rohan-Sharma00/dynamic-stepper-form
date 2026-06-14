@@ -1,5 +1,6 @@
 const dotenv = require("dotenv");
 dotenv.config();
+console.log("Mongo URI exists:", !!process.env.MONGODB_URI);
 const cors = require("cors");
 const express = require("express");
 const helmet = require("helmet");
