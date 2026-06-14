@@ -4,14 +4,15 @@
 
 [functions]
   directory = "backend"
-  external_node_modules = ["express", "mongoose", "cors", "serverless-http", "helmet", "express-rate-limit"]
   node_bundler = "esbuild"
 
+# THIS MUST BE FIRST
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/app/api/:splat"
   status = 200
 
+# THIS MUST BE SECOND
 [[redirects]]
   from = "/*"
   to = "/index.html"
