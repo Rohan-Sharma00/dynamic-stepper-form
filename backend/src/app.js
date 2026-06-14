@@ -62,9 +62,13 @@ app.use("/api/forms", formRoutes);
 app.use("/api/submissions", submissionRoutes);
 
 app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    message: "API is running",
+  res.json({ success: true, message: "API is running" });
+});
+
+app.use((req, res) => {
+  res.status(404).json({ 
+    message: "Route not found", 
+    receivedPath: req.originalUrl 
   });
 });
 
