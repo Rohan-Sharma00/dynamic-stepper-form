@@ -5,7 +5,7 @@ const cors = require("cors");
 const express = require("express");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-const serverless = require("serverless-http"); 
+// const serverless = require("serverless-http"); 
 
 const { connectDB } = require("./config/database");
 const formRoutes = require("./routes/form.routes");
@@ -79,13 +79,15 @@ app.use((err, req, res, next) => {
   });
 });
 
-if (process.env.NODE_ENV !== "production") {
-  connectDB().then(() => {
+connectDB()
+  .then(() => {
     app.listen(process.env.PORT || 5000, () => {
-      console.log(`Server running locally on port ${process.env.PORT || 5000}`);
+      console.log(`Server running on port ${process.env.PORT || 5000}`);
     });
+  })
+  .catch((err) => {
+    console.error("Startup failed:", err);
   });
-}
 
 const handler = serverless(app);
 
