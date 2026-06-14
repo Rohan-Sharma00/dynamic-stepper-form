@@ -57,6 +57,13 @@ app.use(async (req, res, next) => {
 app.use("/api/forms", formRoutes);
 app.use("/api/submissions", submissionRoutes);
 
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "API is running",
+  });
+});
+
 app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).json({
     success: false,
