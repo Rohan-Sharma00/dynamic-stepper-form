@@ -8,8 +8,9 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/app/:splat"
+  to = "/.netlify/functions/app/api/:splat"
   status = 200
+  force = true
 
 [[redirects]]
   from = "/*"
