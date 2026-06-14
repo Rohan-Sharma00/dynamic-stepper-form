@@ -35,10 +35,10 @@ app.use(
 
 app.use("/api/forms", formRoutes);
 
-// app.use(
-//   "/api/submissions",
-//   submissionRoutes
-// );
+app.use(
+  "/api/submissions",
+  submissionRoutes
+);
 
 app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).json({
